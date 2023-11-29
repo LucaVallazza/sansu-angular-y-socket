@@ -1,0 +1,50 @@
+<p>{{user | json}}</p>
+<div class="">
+  <div class="characterContainer">
+    @for (character of characters; track $index) {
+
+    <div class="card characterCard">
+      <button class="btn btn-danger deleteButton" (click)="deleteCharacter(character.description)">X</button>
+      <p>ID: {{character.id}}</p>
+      <p class="fw-bold">Descripcion:</p>
+      <p class="">{{character.description}}</p>
+
+      <div class="w-auto mb-0 mt-auto">
+        <button [ngClass]="user.votes.includes(character.id) ? 'btn bg-danger' : 'btn bg-primary'"
+          class="text-white w-100 mt-3" (click)="changeVote(character.id)">
+          {{user.votes.includes(character.id) ? 'Eliminar voto' : 'Votar' }}
+        </button>
+      </div>
+    </div>
+    }@empty {
+    <div>
+      <div class="card characterCard">
+        No hay personajes para mostrar
+      </div>
+    </div>
+    }
+    <app-add-character></app-add-character>
+  </div>
+
+  <div class="bg-light fixed-top p-3 w-100 d-flex justify-content-around">
+    <div>
+
+
+    </div>
+    @if (user.votes.length < 6) { <button class="disabled m-auto btn btn-primary ">
+      <p class="m-auto">{{user.votes.length}} de 6</p>
+      </button>
+
+      }@else {
+      <button (click)="sendVotes()" class="m-auto btn btn-primary ">
+        Avanzar
+      </button>
+      }
+      <button class="m-auto btn btn-danger "(click)=cleanVotes() >
+        Eliminar votos
+      </button>
+      <button class="m-auto btn btn-info "(click)="refresh()" >
+        Actualizar
+      </button>
+  </div>
+</div>

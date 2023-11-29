@@ -1,0 +1,55 @@
+.characterCard{
+  padding: .5rem;
+  text-align: center;
+  width: 100%;
+  max-width: 20rem;
+  min-width: 10rem;
+  margin: 1rem;
+}
+
+.votesContainer{
+  background-color: rgba($color: #123, $alpha: 0.1);
+  border-radius: 0.5rem;
+}
+
+.userIcon{
+  letter-spacing: -1px;
+}
+
+.characterContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  width: 100vw;
+}
+
+
+.iconNotVoted{
+  color: #444;
+}
+
+.iconVotedByUser{
+  color: #fff;
+  background: rgba($color: #131, $alpha: 0.7);
+  box-shadow: 0px 0px 5px #131;
+
+  animation-duration: 3s;
+  transition: all;
+  animation-name: iconVotedShine;
+  animation-iteration-count: infinite;
+}
+
+.iconVoted{
+  color: #fff;
+  background: rgba($color: #1a1, $alpha: 0.7);
+  box-shadow: 0px 0px 5px #4a4;
+
+  animation-duration: 3s;
+  transition: all;
+  animation-name: iconVotedShine;
+  animation-iteration-count: infinite;
+}
+
+
+

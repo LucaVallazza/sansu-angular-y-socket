@@ -1,0 +1,42 @@
+{{user | json}}
+<div>
+  <div class="characterContainer">
+    @for (character of characters; track $index) {
+
+    <div class="card characterCard">
+      <p class="fw-bold">Descripcion:</p>
+      <p class="">{{character.description}}</p>
+
+      <div class="w-auto mb-0 mt-auto">
+        <div class="votesContainer px-2 pt-2 pb-3">
+          <p class="fw-bold mb-0">Votos:</p>
+          <div class="text-center d-flex justify-content-around flex-row">
+
+            @for (nuser of users; track $index) {
+              <div [ngClass]="nuser.votes.includes(character.id)  ? (user.id === nuser.id ?'iconVotedByUser' : 'iconVoted') : ('iconNotVoted')" class="userIcon rounded-circle aspect-square overflow-hidden p-0 m-0 mt-2">
+                <p  class="fw-bold p-1 px-2 m-0">
+                  {{nuser.name[0]}}
+                  {{nuser.name[1]}}
+                </p>
+              </div>
+
+            }
+          </div>
+
+        </div>
+        <button (click)="changeVote(character.id)" [ngClass]="user.votes.includes(character.id) ? 'btn bg-danger' : 'btn bg-primary'" class="text-white w-100 mt-3">
+          {{user.votes.includes(character.id) ? 'Eliminar voto' : 'Votar' }}
+        </button>
+      </div>
+    </div>
+
+    }@empty {
+    No hay personajes para mostrar
+    }
+  </div>
+
+  <div  class="fixed-top bg-light p-2 d-flex justify-content-around">
+    <button (click)="refresh()" class="btn btn-info">Actualizar</button>
+    <button (click)="end()" class="btn btn-danger">Terminar</button>
+  </div>
+</div>

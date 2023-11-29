@@ -1,0 +1,15 @@
+<div class="container-fluid flex-row justify-content-center  align-items-center vh-100">
+  <div class="card m-auto mt-4" style="width:18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Ingrese su nombre</h5>
+      <form [formGroup]="form" (ngSubmit)="sendInfo()" class="form-group">
+        <label for="">Nombre:</label>
+        <div>
+          <input type="text" formControlName="name" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Confirmar</button>
+      </form>
+
+    </div>
+  </div>
+</div>

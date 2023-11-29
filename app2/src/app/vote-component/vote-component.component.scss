@@ -1,0 +1,66 @@
+.characterCard{
+  padding: .5rem;
+  text-align: center;
+  width: 100vh;
+  max-width: 20rem;
+  min-width: 10rem;
+  margin: 1rem;
+}
+
+.votesContainer{
+  background-color: rgba($color: #123, $alpha: 0.1);
+  border-radius: 0.5rem;
+}
+
+.userIcon{
+  letter-spacing: -1px;
+}
+
+.characterContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  width: 100vw;
+}
+
+
+.iconNotVoted{
+  color: #444;
+}
+
+
+.iconVoted{
+  color: #fff;
+  background: rgba($color: #1a1, $alpha: 0.7);
+  box-shadow: 0px 0px 5px #4a4;
+
+  animation-duration: 3s;
+  transition: all;
+  animation-name: iconVotedShine;
+  animation-iteration-count: infinite;
+}
+
+@keyframes iconVotedShine {
+  0%,100% {
+    padding: 2px;
+    background-color: #30a030;
+  }
+
+  50% {
+    padding: 0px;
+    background-color:  #4fac4f;
+  }
+}
+
+
+.deleteButton{
+  position: absolute;
+  right: -0.5rem;
+  top: -0.5rem;
+  border-radius: 100%;
+  text-align: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+}
