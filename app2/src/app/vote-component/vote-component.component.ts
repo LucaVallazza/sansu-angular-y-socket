@@ -92,6 +92,33 @@ export class VoteComponentComponent implements OnInit {
     this.ngOnInit();
   }
 
+
+
+  async ngOnInit() {
+
+    console.log('on init');
+
+    // Obtain and set the characters from server
+    this.apihandler.getCharacters().subscribe((res) => {
+      console.log('getCaracters():' , res);
+      // this.characters = res['characters'];
+      // console.log(this.characters);
+    });
+
+    this.apihandler.getUsers().subscribe((res) => {
+      console.log('getUsers():' , res);
+
+      const userName = localStorage.getItem('name');
+      // this.user = this.users.find((user) => user.name == userName);
+    });
+
+
+
+    // await this.adjustVotes();
+
+  }
+
+
   async adjustVotes() {
     setTimeout(() => {
       let badVotes = [];
@@ -116,23 +143,5 @@ export class VoteComponentComponent implements OnInit {
       });
       this.serverUpdateVotes();
     }, 2000);
-  }
-  async ngOnInit() {
-    console.log('on init');
-    this.apihandler.getCharacters().subscribe((res) => {
-      console.log('res:' , res);
-      this.characters = res['characters'];
-      console.log(this.characters);
-    });
-
-    this.apihandler.getUsers().subscribe((res) => {
-      this.users = res['users'];
-      const userName = localStorage.getItem('name');
-      this.user = this.users.find((user) => user.name == userName);
-    });
-
-    this.apihandler.connect()
-
-    await this.adjustVotes();
   }
 }

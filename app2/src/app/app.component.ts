@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
@@ -12,7 +12,24 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent implements OnInit{
   title = 'app2';
 
+  userName : string = null
+
   ngOnInit(): void {
     console.log('gola')
+
+window.addEventListener('refresh', () =>{
+  localStorage.clear()
+})
+
+    const userName = localStorage.getItem('name')
+
+    if(userName){
+      console.log('username', userName)
+      this.userName = userName
+
+    }
+
   }
+
+
 }

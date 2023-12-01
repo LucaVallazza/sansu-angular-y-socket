@@ -54,14 +54,14 @@ export class ApiHandlerService {
     return this.http.get(`${enviroment.api_url}/characters`);
   }
 
+    addCharacter(description: string) {
+      return this.http.post(`${enviroment.api_url}/characters/add`, {
+        description: description,
+      });
+    }
+
   getUsers() {
     return this.http.get(`${enviroment.api_url}/users`);
-  }
-
-  addCharacter(description: string) {
-    return this.http.post(`${enviroment.api_url}/characters/add`, {
-      description: description,
-    });
   }
 
   connect (){

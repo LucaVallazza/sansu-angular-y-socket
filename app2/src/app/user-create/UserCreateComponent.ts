@@ -13,7 +13,7 @@ import { enviroment } from '../../enviroment/enviroment';
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   providers: [ApiHandlerService],
   templateUrl: './user-create.component.html',
-  styleUrl: './user-create.component.scss',
+  styleUrls:[ './user-create.component.scss', '../vote-component/vote-component.component.scss'],
 })
 export class UserCreateComponent implements OnInit {
 

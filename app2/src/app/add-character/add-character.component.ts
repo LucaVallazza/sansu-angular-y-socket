@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
   imports: [CommonModule, HttpClientModule, ReactiveFormsModule, RouterModule],
   providers: [ApiHandlerService],
   templateUrl: './add-character.component.html',
-  styleUrl: '../vote-component/vote-component.component.scss',
+  styleUrls: ['../vote-component/vote-component.component.scss'],
 })
 export class AddCharacterComponent implements OnInit {
   private apihandler = inject(ApiHandlerService);
@@ -28,6 +28,8 @@ export class AddCharacterComponent implements OnInit {
   character: CharacterType;
 
   async addCharacter() {
+    // Sends the info to the server
+
     if (this.form.valid) {
       const description = this.form.get('description').value;
 
@@ -43,7 +45,7 @@ export class AddCharacterComponent implements OnInit {
       });
     }
     await this.form.get('description').setValue('');
-    await window.location.reload()
+
     return;
   }
 

@@ -1,5 +1,10 @@
 <nav class="navbar m-0 px-2">
   <a class="navbar-brand text-white p-2" href="#">SANSU</a>
+  @if(userName){
+    <a class="navbar-brand text-white p-2" href="#">Hola, <b>{{userName.charAt(0).toUpperCase() + userName.slice(1)}}</b>!</a>
+  }@else {
+    <a class="navbar-brand text-white p-2" href="#">Iniciar Sesion</a>
+  }
 
 </nav>
 

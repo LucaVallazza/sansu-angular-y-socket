@@ -53,7 +53,7 @@ export default function (app: Express, prisma: PrismaClient) {
         prisma.character.deleteMany({where: {description: body.description}})
         res.status(409).send('Hay 2 characters con esa descripcion. Ambos fueron eliminados')
     }else{
-        res.status(304).json({character}).send('Ya hay un character con ese nombre!')
+        res.status(304).json({character})
     }
   });
 
