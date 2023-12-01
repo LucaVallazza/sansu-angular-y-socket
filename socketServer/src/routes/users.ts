@@ -36,6 +36,7 @@ export default function (app: Express, prisma: PrismaClient) {
 
   // Mandamos user y creamos nuevo user si no hay otro que se llama igual
   app.post(`${USERS_PATH}/add`, async (req, res) => {
+    console.log(`POST a :${USERS_PATH}/add`)
     const body = req.body;
     if (!body.name) {
       res.status(300).send("La informacion se mando en un formato incorrecto");
@@ -43,21 +44,21 @@ export default function (app: Express, prisma: PrismaClient) {
 
     const user = await prisma.users.findMany({where: {name: body.name}});
 
-    if(!user){
+    if(user.length === 0){
         const newUser = {
             name : body.name,
             hasShown: false,
             votes : []
         }
         const user = await prisma.users.create({data:newUser})    
-        res.status(201).send('Usuario creado!').json({user:user})
+        res.status(201).json({user:user, message: "Usuario creado!"})
     }
     else if(user.length > 1 ){
         prisma.users.deleteMany({where: {id: body.id}})
         res.status(409).send('Hay 2 usuarios con ese ID. Ambos fueron eliminados')
     }else{
-        res.status(304).send('Ya hay un usuario con ese nombre!').json({user:user})
+        res.status(200).json({user:user[0] , message: "Ya hay un usuario con ese nombre!"})
     }
-  });
+  })
 
 }

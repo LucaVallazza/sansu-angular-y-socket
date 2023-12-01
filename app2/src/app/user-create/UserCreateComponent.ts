@@ -5,6 +5,7 @@ import { Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ApiHandlerService } from '../services/api-handler.service';
 import { Router } from '@angular/router';
+import { enviroment } from '../../enviroment/enviroment';
 
 @Component({
   selector: 'app-user-create',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
   styleUrl: './user-create.component.scss',
 })
 export class UserCreateComponent implements OnInit {
-  private API_URL: string = 'http://localhost:4000';
+
 
   constructor(private apiHandler: ApiHandlerService) {}
 
@@ -27,17 +28,19 @@ export class UserCreateComponent implements OnInit {
 
   sendInfo() {
     if (!this.form.invalid) {
+      this.apiHandler.connect()
       const userName : string = this.form.get('name').value
 
       console.log("Enviando...")
 
-      this.http.post(`${this.API_URL}/users/add`, {name: userName}).subscribe(res => {
+      this.http.post(`${enviroment.api_url}/users/add`, {name: userName}).subscribe(res => {
         console.log('Respuesta del servidor:', res);
-        if(res['status'] === 201){
-          localStorage.setItem('name', userName.toLowerCase())
-          this.apiHandler.setUserName(userName)
-          const path : string = res['routeTo']
-          this.router.navigateByUrl(res['routeTo'])
+        if(res['user']){
+          const newUser = res['user']
+          localStorage.setItem('name', newUser.name)
+          this.apiHandler.setUserName(newUser.name)
+          const path : string = newUser.votes.hasShown ? '/game' : '/vote'
+          this.router.navigateByUrl(path)
         }
 
       });

@@ -131,7 +131,7 @@ export class VoteComponentComponent implements OnInit {
       this.user = this.users.find((user) => user.name == userName);
     });
 
-    this.apihandler.connectSocket()
+    this.apihandler.connect()
 
     await this.adjustVotes();
   }
