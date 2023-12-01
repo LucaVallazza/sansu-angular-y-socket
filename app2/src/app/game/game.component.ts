@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   imports: [CommonModule, CharactersDisplayComponent],
   providers: [ApiHandlerService],
   templateUrl: './game.component.html',
-  styleUrl: './game.component.scss'
+  styleUrls: ['./game.component.scss', '../vote-component/vote-component.component.scss']
 })
 export class GameComponent implements OnInit, OnDestroy{
 

@@ -2,9 +2,15 @@
   padding: .5rem;
   text-align: center;
   width: 100vh;
-  max-width: 20rem;
+  max-width: 14rem;
   min-width: 10rem;
   margin: 1rem;
+  box-shadow: black 0px 0px 5px -3px;
+}
+textarea , input{
+  border: #bbb 1px solid;
+  border-radius: .5rem ;
+
 }
 
 .votesContainer{
@@ -63,4 +69,32 @@
   width: 1.5rem;
   height: 1.5rem;
   padding: 0;
+}
+
+.navbar{
+  background-color:#475569 ;
+}
+.navbar button{
+  color: white;
+  background-color:#0f172a ;
+  border:  1px solid #0f172a;
+}
+.navbar button:hover{
+  color: #fff;
+  background-color:#1e293b ;
+  border:  1px solid #1e293b;
+  box-shadow: black 0px 0px 5px -2px;
+}
+
+
+.btn{
+  color: white;
+  background-color:#0f172a ;
+  border:  1px solid #0f172a;
+}
+.btn:hover{
+  color: #fff;
+  background-color:#1e293b ;
+  border:  1px solid #1e293b;
+  box-shadow: black 0px 0px 5px -2px;
 }

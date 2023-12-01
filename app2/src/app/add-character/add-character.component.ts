@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
   imports: [CommonModule, HttpClientModule, ReactiveFormsModule, RouterModule],
   providers: [ApiHandlerService],
   templateUrl: './add-character.component.html',
-  styleUrl: '../characters-display/characters-display.component.scss',
+  styleUrl: '../vote-component/vote-component.component.scss',
 })
 export class AddCharacterComponent implements OnInit {
   private apihandler = inject(ApiHandlerService);

@@ -1,4 +1,25 @@
+<div class=" navbar sticky-top p-3 m-0 w-100 d-flex justify-content-around">
+  <div>
+  </div>
+  @if (user.votes.length < 6) { <button class="disabled m-auto btn btn-primary ">
+    <p class="m-auto">{{user.votes.length}} de 6</p>
+  </button>
+
+}@else {
+  <button (click)="sendVotes()" class="m-auto btn btn-primary ">
+    Avanzar
+  </button>
+}
+<button class="m-auto btn btn-danger "(click)=cleanVotes() >
+  Eliminar votos
+</button>
+<button class="m-auto btn btn-info "(click)="refresh()" >
+  Actualizar
+</button>
+</div>
+
 <p>{{user | json}}</p>
+
 <div class="">
   <div class="characterContainer">
     @for (character of characters; track $index) {
@@ -26,25 +47,5 @@
     <app-add-character></app-add-character>
   </div>
 
-  <div class="bg-light fixed-top p-3 w-100 d-flex justify-content-around">
-    <div>
 
-
-    </div>
-    @if (user.votes.length < 6) { <button class="disabled m-auto btn btn-primary ">
-      <p class="m-auto">{{user.votes.length}} de 6</p>
-      </button>
-
-      }@else {
-      <button (click)="sendVotes()" class="m-auto btn btn-primary ">
-        Avanzar
-      </button>
-      }
-      <button class="m-auto btn btn-danger "(click)=cleanVotes() >
-        Eliminar votos
-      </button>
-      <button class="m-auto btn btn-info "(click)="refresh()" >
-        Actualizar
-      </button>
-  </div>
 </div>

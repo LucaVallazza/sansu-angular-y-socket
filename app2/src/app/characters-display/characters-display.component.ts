@@ -10,7 +10,7 @@ import { CharacterType, UserType } from '../../assets/types';
   imports: [CommonModule, HttpClientModule],
   providers: [ApiHandlerService],
   templateUrl: './characters-display.component.html',
-  styleUrl: './characters-display.component.scss',
+  styleUrls: ['./characters-display.component.scss', '../vote-component/vote-component.component.scss'],
 })
 export class CharactersDisplayComponent implements OnInit {
   private apihandler = inject(ApiHandlerService);
