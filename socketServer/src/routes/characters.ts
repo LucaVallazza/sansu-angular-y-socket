@@ -2,10 +2,11 @@
 
 import { PrismaClient } from "@prisma/client";
 import { Express } from "express";
+import { app, prisma } from "../server";
 
 const CHARACTERS_PATH = "/characters";
 
-export default function (app: Express, prisma: PrismaClient) {
+export default function () {
   app.get(`${CHARACTERS_PATH}`, async (req, res) => {
     const characters = await prisma.character.findMany();
     res.status(200).send(characters);
@@ -50,7 +51,7 @@ export default function (app: Express, prisma: PrismaClient) {
         res.status(201).send({character:character})
     }
     else if(character.length > 1 ){
-        prisma.character.deleteMany({where: {description: body.description}})
+        await prisma.character.deleteMany({where: {description: body.description}})
         res.status(409).send('Hay 2 characters con esa descripcion. Ambos fueron eliminados')
     }else{
         res.status(304).json({character})

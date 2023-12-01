@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CharacterType, UserType } from '../../assets/types';
-import { Socket } from 'ngx-socket-io';
-import { CookieService } from 'ngx-cookie-service';
-import { io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { enviroment } from '../../enviroment/enviroment';
 
 @Injectable({
@@ -16,7 +14,7 @@ export class ApiHandlerService {
 
 
   userName: string;
-  socket;
+  socket  : Socket
 
   restart() {
     this.http.get(`${enviroment.api_url}/restart`).subscribe();
@@ -55,6 +53,8 @@ export class ApiHandlerService {
   }
 
     addCharacter(description: string) {
+      console.log(`Enviando ${description} a ${enviroment.api_url}`);
+      this.socket.emit('add-character', description )
       return this.http.post(`${enviroment.api_url}/characters/add`, {
         description: description,
       });
@@ -71,11 +71,13 @@ export class ApiHandlerService {
       this.socket.on('message' , (data : any)=>{
         console.log("Received a message from websocket sever")
         console.log(data)
-      })
 
-      return()=>{
-        this.socket.disconnect()
-      }
+      })
+      this.socket.on('data-update' , (users, characters)=>{
+        console.log('DATA UPDATE!')
+        console.log('users ', users)
+        console.log('characters ', characters)
+      })
     })
 
     let observer = {
@@ -84,6 +86,7 @@ export class ApiHandlerService {
       }
     }
 
+    //Que es un subject?????
     return Subject.create(observer, observable)
   }
 }

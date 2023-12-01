@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { Express } from "express";
+import { app, prisma } from "../server";
 
 const USERS_PATH = "/users";
 
-export default function (app: Express, prisma: PrismaClient) {
+export default function () {
   app.get(`${USERS_PATH}`, async (req, res) => {
     const users = await prisma.users.findMany();
     res.status(200).send(users);
@@ -22,7 +23,7 @@ export default function (app: Express, prisma: PrismaClient) {
         res.status(200).send('No se encontro ningun usuario')
     }
     else if(user.length > 1 ){
-        prisma.users.deleteMany({where: {id: body.id}})
+        await prisma.users.deleteMany({where: {id: body.id}})
         res.status(409).send('Hay 2 usuarios con ese ID. Ambos fueron eliminados')
     }else{
         await prisma.users.update({where: {id: body.id},data : {votes: body.votes, hasShown: true}})
@@ -54,7 +55,7 @@ export default function (app: Express, prisma: PrismaClient) {
         res.status(201).json({user:user, message: "Usuario creado!"})
     }
     else if(user.length > 1 ){
-        prisma.users.deleteMany({where: {id: body.id}})
+        await prisma.users.deleteMany({where: {id: body.id}})
         res.status(409).send('Hay 2 usuarios con ese ID. Ambos fueron eliminados')
     }else{
         res.status(200).json({user:user[0] , message: "Ya hay un usuario con ese nombre!"})

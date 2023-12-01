@@ -10,6 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { enviroment } from '../../enviroment/enviroment';
 
 @Component({
   selector: 'app-add-character',
@@ -29,11 +30,11 @@ export class AddCharacterComponent implements OnInit {
 
   async addCharacter() {
     // Sends the info to the server
-
     if (this.form.valid) {
+
       const description = this.form.get('description').value;
 
-      console.log('AddCharacter!');
+
       this.apihandler.addCharacter(description).subscribe({
         next: (data) => {
           this.form.get('description').setValue('');
@@ -50,6 +51,7 @@ export class AddCharacterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const [hola, hola] = this.apihandler.connect()
     this.form = new FormGroup({
       description: new FormControl<string>(null, [
         Validators.required,
