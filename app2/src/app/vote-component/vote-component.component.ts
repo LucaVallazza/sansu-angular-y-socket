@@ -6,11 +6,17 @@ import { CharacterType, UserType } from '../../assets/types';
 import { AddCharacterComponent } from '../add-character/add-character.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { io } from 'socket.io-client';
 
 @Component({
   selector: 'app-vote-component',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, AddCharacterComponent, RouterModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    AddCharacterComponent,
+    RouterModule,
+  ],
   providers: [ApiHandlerService],
   templateUrl: './vote-component.component.html',
   styleUrl: './vote-component.component.scss',
@@ -24,35 +30,30 @@ export class VoteComponentComponent implements OnInit {
   characters: CharacterType[] = [];
   users: UserType[] = [];
 
+
   sendVotes() {
     // Manda los votos de user.votes al server y anda a /game
     this.apihandler.showVotes(this.user).subscribe({
-      next: (data)=>{
-        this.router.navigate(['/game'])
+      next: (data) => {
+        this.router.navigate(['/game']);
       },
-      error(err) {
-
-      },
-      complete: () => {
-      },
+      error(err) {},
+      complete: () => {},
     });
-    this.router.navigate(['/game'])
+    this.router.navigate(['/game']);
   }
 
   deleteCharacter(description: string) {
-    this.apihandler.removeCharacter(description)
-    .subscribe({
-      next: (data) =>{
-        this.ngOnInit()
+    this.apihandler.removeCharacter(description).subscribe({
+      next: (data) => {
+        this.ngOnInit();
       },
-      error: (err) => {
-
-      },
+      error: (err) => {},
       complete: () => {
-        this.ngOnInit()
-    }
+        this.ngOnInit();
+      },
     });
-    this.ngOnInit()
+    this.ngOnInit();
   }
 
   serverUpdateVotes() {
@@ -73,29 +74,53 @@ export class VoteComponentComponent implements OnInit {
     }
   }
 
-  async refresh(){
-    this.ngOnInit()
+  async refresh() {
+    this.ngOnInit();
   }
 
-  cleanVotes(){
+  cleanVotes() {
     const userWithCleanVotes = {
       id: this.user.id,
       name: this.user.name,
       hasShown: this.user.hasShown,
-      votes : []
-    }
+      votes: [],
+    };
     console.log('clean Votes');
     this.apihandler.updateUser(userWithCleanVotes).subscribe((d) => {
-      console.log(d)
+      console.log(d);
     });
-    this.ngOnInit()
+    this.ngOnInit();
   }
 
+  async adjustVotes() {
+    setTimeout(() => {
+      let badVotes = [];
+      this.user.votes.map((vote) => {
+        let checked = false;
+        this.characters.map((char) => {
+          if (char.id === vote) {
+            checked = true;
+          }
+        });
+
+        if (checked) {
+          console.log('voto verificado');
+        } else {
+          console.log('voto no verificado');
+          badVotes.push(vote);
+        }
+      });
+
+      badVotes.map((bv) => {
+        this.user.votes.splice(this.user.votes.indexOf(bv), 1);
+      });
+      this.serverUpdateVotes();
+    }, 2000);
+  }
   async ngOnInit() {
-    console.log('on init')
+    console.log('on init');
     this.apihandler.getCharacters().subscribe((res) => {
-      console.log('Resolution');
-      console.log(res);
+      console.log('res:' , res);
       this.characters = res['characters'];
       console.log(this.characters);
     });
@@ -106,35 +131,8 @@ export class VoteComponentComponent implements OnInit {
       this.user = this.users.find((user) => user.name == userName);
     });
 
-    await this.adjustVotes()
+    this.apihandler.connectSocket()
 
-  }
-
-  async adjustVotes(){
-    setTimeout(() => {
-      let badVotes = []
-    this.user.votes.map((vote) => {
-      let checked = false
-      this.characters.map((char) => {
-        if(char.id === vote){
-          checked = true
-        }
-      })
-
-      if(checked){
-        console.log('voto verificado')
-      }
-      else{
-        console.log('voto no verificado')
-        badVotes.push(vote)
-      }
-    })
-
-    badVotes.map(bv => {
-      this.user.votes.splice(this.user.votes.indexOf(bv), 1)
-    })
-    this.serverUpdateVotes()
-    }, 2000);
-
+    await this.adjustVotes();
   }
 }

@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './user-create.component.scss',
 })
 export class UserCreateComponent implements OnInit {
-  private API_URL: string = 'https://sansu-frontend.vercel.app/api';
+  private API_URL: string = 'http://localhost:4000';
 
   constructor(private apiHandler: ApiHandlerService) {}
 
@@ -28,13 +28,13 @@ export class UserCreateComponent implements OnInit {
   sendInfo() {
     if (!this.form.invalid) {
       const userName : string = this.form.get('name').value
-      localStorage.setItem('name', userName.toLowerCase())
 
       console.log("Enviando...")
 
-      this.http.post(`${this.API_URL}/users/add`, {userName: userName}).subscribe(res => {
+      this.http.post(`${this.API_URL}/users/add`, {name: userName}).subscribe(res => {
         console.log('Respuesta del servidor:', res);
         if(res['status'] === 201){
+          localStorage.setItem('name', userName.toLowerCase())
           this.apiHandler.setUserName(userName)
           const path : string = res['routeTo']
           this.router.navigateByUrl(res['routeTo'])
