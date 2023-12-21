@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ApiHandlerService } from './../services/api-handler.service';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiHandlerService } from '../services/api-handler.service';
 import { CharacterType } from '../../assets/types';
 import {
   FormControl,
@@ -21,7 +21,8 @@ import { enviroment } from '../../enviroment/enviroment';
   styleUrls: ['../vote-component/vote-component.component.scss'],
 })
 export class AddCharacterComponent implements OnInit {
-  private apihandler = inject(ApiHandlerService);
+  @Input() apihandler : ApiHandlerService
+
   private router = inject(Router);
 
   form: FormGroup;
@@ -35,15 +36,16 @@ export class AddCharacterComponent implements OnInit {
       const description = this.form.get('description').value;
 
 
-      this.apihandler.addCharacter(description).subscribe({
-        next: (data) => {
-          this.form.get('description').setValue('');
-        },
-        error(err) {},
-        complete: () => {
-          this.form.get('description').setValue('');
-        },
-      });
+      this.apihandler.addCharacter(description)
+      //.subscribe({
+      //   next: (data) => {
+      //     this.form.get('description').setValue('');
+      //   },
+      //   error(err) {},
+      //   complete: () => {
+      //     this.form.get('description').setValue('');
+      //   },
+      // });
     }
     await this.form.get('description').setValue('');
 
@@ -51,7 +53,6 @@ export class AddCharacterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const [hola, hola] = this.apihandler.connect()
     this.form = new FormGroup({
       description: new FormControl<string>(null, [
         Validators.required,

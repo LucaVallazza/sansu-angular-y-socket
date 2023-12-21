@@ -6,7 +6,9 @@ const USERS_PATH = "/users";
 
 export default function () {
   app.get(`${USERS_PATH}`, async (req, res) => {
-    const users = await prisma.users.findMany();
+    const users = await prisma.users.findMany({orderBy: {name: 'asc'}});
+    console.log("GET A /USERS")
+    console.log("    devolvemos" , users)
     res.status(200).send(users);
   });
 

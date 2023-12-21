@@ -28,7 +28,7 @@ export class UserCreateComponent implements OnInit {
 
   sendInfo() {
     if (!this.form.invalid) {
-      this.apiHandler.connect()
+
       const userName : string = this.form.get('name').value
 
       console.log("Enviando...")
@@ -56,6 +56,4 @@ export class UserCreateComponent implements OnInit {
       ]),
     });
   }
-
-
 }

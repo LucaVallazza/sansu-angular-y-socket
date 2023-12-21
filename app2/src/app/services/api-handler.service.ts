@@ -1,23 +1,50 @@
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, Output, inject } from '@angular/core';
+import { EventEmitter, Injectable, Input, Output, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CharacterType, UserType } from '../../assets/types';
-import { Socket, io } from 'socket.io-client';
+import {io} from 'socket.io-client';
 import { enviroment } from '../../enviroment/enviroment';
+import { SocketIoModule, Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiHandlerService {
+export class ApiHandlerService extends Socket {
 
-  private http: HttpClient = inject(HttpClient)
+  private http: HttpClient = inject(HttpClient);
 
+  charactersEmitter : EventEmitter<CharacterType[]> = new EventEmitter<CharacterType[]>()
+
+  usersEmitter : EventEmitter<UserType[]> = new EventEmitter<UserType[]>()
 
   userName: string;
-  socket  : Socket
+
+  constructor() {
+    super({
+      url: enviroment.ws_url,
+      options: {
+        reconnection: true
+      }
+    });
+
+  this.ioSocket.on('event', res => console.log('Recibido: event'))
+
+  this.ioSocket.on('updateCharacters', characters =>{
+    console.log("Emitido desde api handler por updateCharacters", characters)
+    this.charactersEmitter.emit(characters)
+
+  })
+
+  this.ioSocket.on('updateUsers', users =>{
+    console.log("Emitido desde api handler por updateUsers", users)
+    this.usersEmitter.emit(users)
+
+  })
+  }
 
   restart() {
-    this.http.get(`${enviroment.api_url}/restart`).subscribe();
+    this.http.delete(`${enviroment.api_url}/restart`).subscribe();
   }
 
   getReadyUsers() {
@@ -29,17 +56,22 @@ export class ApiHandlerService {
   }
 
   removeCharacter(description: string) {
-    return this.http.post(`${enviroment.api_url}/characters/remove`, {
-      description: description,
-    });
+    this.ioSocket.emit('removeCharacter' , description)
   }
 
   updateUser(user: UserType) {
-    return this.http.put(`${enviroment.api_url}/users/showVotes`, user);
+    this.ioSocket.emit('updateUser' , user)
   }
 
   showVotes(user: UserType) {
-    return this.http.post(`${enviroment.api_url}/users/showVotes`, user);
+    const newUser = {
+      name: user.name,
+      hasShown: true,
+      id : user.id,
+      votes: user.votes
+
+    }
+    this.ioSocket.emit('updateUser' , newUser)
   }
 
   getUser() {
@@ -52,41 +84,20 @@ export class ApiHandlerService {
     return this.http.get(`${enviroment.api_url}/characters`);
   }
 
-    addCharacter(description: string) {
-      console.log(`Enviando ${description} a ${enviroment.api_url}`);
-      this.socket.emit('add-character', description )
-      return this.http.post(`${enviroment.api_url}/characters/add`, {
-        description: description,
-      });
-    }
+  addCharacter(description: string) {
+    this.ioSocket.emit('addCharacter', description)
+
+    // console.log(`Enviando ${description} a ${enviroment.api_url}`);
+    // this.ioSocket.emit('add-character', description )
+    // return this.http.post(`${enviroment.api_url}/characters/add`, {
+    //   description: description,
+    // });
+  }
+
 
   getUsers() {
     return this.http.get(`${enviroment.api_url}/users`);
   }
 
-  connect (){
-    this.socket = io(enviroment.ws_url)
 
-    let observable = new Observable(observer =>{
-      this.socket.on('message' , (data : any)=>{
-        console.log("Received a message from websocket sever")
-        console.log(data)
-
-      })
-      this.socket.on('data-update' , (users, characters)=>{
-        console.log('DATA UPDATE!')
-        console.log('users ', users)
-        console.log('characters ', characters)
-      })
-    })
-
-    let observer = {
-      next: (data: Object) =>{
-        this.socket.emit('message', JSON.stringify(data))
-      }
-    }
-
-    //Que es un subject?????
-    return Subject.create(observer, observable)
-  }
 }

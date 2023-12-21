@@ -1,0 +1,42 @@
+
+.userBadge{
+  padding: .3rem .8rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.loaderIcon{
+  transition: transform;
+  transform-origin: 50% 50%;
+  display: inline-block;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+}
+
+@keyframes spin{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.loading{
+
+background-color:#94a3b8;
+
+}
+
+.ready{
+  background-color:#22c55e;
+}
+
+.icon{
+  display: inline-block;
+  scale: 1;
+}

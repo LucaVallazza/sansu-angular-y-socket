@@ -32,6 +32,11 @@ export const server = createServer(app);
 const port = 3000;
 const ws_port = 3001;
 
+app.delete('/restart', async ()=>{
+  await prisma.character.deleteMany()
+  await prisma.users.deleteMany()
+})
+
 userRoutes();
 characterRoutes();
 socket()

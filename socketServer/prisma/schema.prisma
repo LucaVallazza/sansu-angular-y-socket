@@ -13,11 +13,11 @@ datasource db {
 model Users {
   id       Int     @id @default(autoincrement())
   name     String  @unique
-  votes    Int[]
-  hasShown Boolean
+  votes    Int[]   @default([])
+  hasShown Boolean @default(false)
 }
 
 model Character {
   id          Int    @id @default(autoincrement())
-  description String
+  description String @unique
 }

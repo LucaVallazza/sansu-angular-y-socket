@@ -7,6 +7,7 @@
   margin: 1rem;
   box-shadow: black 0px 0px 5px -3px;
 }
+
 textarea , input{
   border: #bbb 1px solid;
   border-radius: .5rem ;
@@ -19,7 +20,11 @@ textarea , input{
 }
 
 .userIcon{
-  letter-spacing: -1px;
+  letter-spacing: 0px;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2rem;
+  padding: 0px;
 }
 
 .characterContainer{
@@ -32,11 +37,12 @@ textarea , input{
 
 
 .iconNotVoted{
-  color: #444;
+  color: #111;
 }
 
 
 .iconVoted{
+  padding: 0px;
   color: #fff;
   background: rgba($color: #1a1, $alpha: 0.7);
   box-shadow: 0px 0px 5px #4a4;
@@ -49,12 +55,10 @@ textarea , input{
 
 @keyframes iconVotedShine {
   0%,100% {
-    padding: 2px;
     background-color: #30a030;
   }
 
   50% {
-    padding: 0px;
     background-color:  #4fac4f;
   }
 }
@@ -87,14 +91,15 @@ textarea , input{
 }
 
 
-.btn{
+.btn {
   color: white;
-  background-color:#0f172a ;
-  border:  1px solid #0f172a;
+  background-color:#1e293b;
+
 }
+
+
 .btn:hover{
   color: #fff;
-  background-color:#1e293b ;
-  border:  1px solid #1e293b;
+  background-color:#303a4b;
   box-shadow: black 0px 0px 5px -2px;
 }

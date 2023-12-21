@@ -3,58 +3,62 @@
   </div>
   @if (user !== undefined && user.votes.length < 6 ) { <button class="disabled m-auto btn btn-primary ">
     <p class="m-auto">{{user.votes.length}} de 6</p>
-  </button>
+    </button>
 
-}@else {
-  <button (click)="sendVotes()" class="m-auto btn btn-primary ">
-    Avanzar
-  </button>
-}
-<button class="m-auto btn btn-danger "(click)=cleanVotes() >
-  Eliminar votos
-</button>
-<button class="m-auto btn btn-info "(click)="refresh()" >
-  Actualizar
-</button>
+    }@else{
+    <button [disabled]="user.hasShown" (click)="sendVotes()" class="m-auto btn btn-primary ">
+    {{user.hasShown? '6 de 6'  : 'Mostrar votos' }}
+    </button>
+    }
 </div>
 
-<p>{{user | json}}</p>
 
 <div class="">
+
+<app-users-status [users]="users"></app-users-status>
+
+
+
   <div class="characterContainer">
-    @if(characters !== undefined){
-      @for (character of characters; track $index) {
-
-      <div class="card characterCard">
-        <button class="btn btn-danger deleteButton" (click)="deleteCharacter(character.description)">X</button>
-        <p>ID: {{character.id}}</p>
-        <p class="fw-bold">Descripcion:</p>
-        <p class="">{{character.description}}</p>
-
-        <div class="w-auto mb-0 mt-auto">
-          <button [ngClass]="user.votes.includes(character.id) ? 'btn bg-danger' : 'btn bg-primary'"
-            class="text-white w-100 mt-3" (click)="changeVote(character.id)">
-            {{user.votes.includes(character.id) ? 'Eliminar voto' : 'Votar' }}
-          </button>
-        </div>
-      </div>
-      }@empty {
+    @if(characters.length > 0){
+    @for (character of characters; track $index) {
+    <div class="card characterCard">
+      <button class="btn btn-danger deleteButton" (click)="deleteCharacter(character.description)">X</button>
+      <p>ID: {{character.id}}</p>
+      <p class="fw-bold">Descripcion</p>
+      <p class="">{{character.description}}</p>
+      @if(user.hasShown){
       <div>
-        <div class="card characterCard">
-          No hay personajes para mostrar
+        <div class="d-flex votesContainer flex-column">
+          <span class="m-2"><b>Votos</b></span>
+          <div class="d-flex justify-content-around flex-row container-fluid ">
+            @for(user of users ; track $index){
+            @if(user.hasShown){
+            <p class="userIcon" [ngClass]="user.votes.includes(character.id) ? 'iconVoted' : 'iconNotVoted' ">{{user.name[0].toUpperCase() + user.name[1]}}</p>
+            }
+            }
+          </div>
         </div>
       </div>
-      }
 
+      }
+      <div class="w-auto mb-0 mt-auto">
+        <button [ngClass]="user.votes.includes(character.id) ? 'btn bg-danger' : 'btn '"
+          class="text-white w-100 mt-3 btn" (click)="changeVote(character.id)">
+          {{user.votes.includes(character.id) ? 'Eliminar voto' : 'Votar' }}
+        </button>
+      </div>
+    </div>
+    }
     }
     @else {
-      <div>
-        <div class="card characterCard">
-          No hay personajes para mostrar
-        </div>
+    <div>
+      <div class="card characterCard">
+        No hay personajes para mostrar
       </div>
+    </div>
     }
-    <app-add-character></app-add-character>
+    <app-add-character [apihandler]="apiHandlerReference"></app-add-character>
   </div>
 
 

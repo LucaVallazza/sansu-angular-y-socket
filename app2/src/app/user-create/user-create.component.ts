@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './user-create.component.html',
-  styleUrl: './user-create.component.scss',
+  styleUrls: ['../vote-component/vote-component.component.scss'],
 })
 export class UserCreateComponent implements OnInit {
   private API_URL: string = 'http://localhost:3000';

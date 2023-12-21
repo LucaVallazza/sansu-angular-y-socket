@@ -15,6 +15,8 @@ import { CharacterType, UserType } from '../../assets/types';
 export class CharactersDisplayComponent implements OnInit {
   private apihandler = inject(ApiHandlerService);
 
+  apiHandlerReference = this.apihandler
+
   user: UserType;
 
   characters: CharacterType[] = [];
@@ -49,7 +51,7 @@ export class CharactersDisplayComponent implements OnInit {
 
   serverUpdateVotes() {
     console.log('Update Votes');
-    this.apihandler.updateUser(this.user).subscribe((d) => console.log(d));
+    this.apihandler.updateUser(this.user)
   }
 
   changeVote(id: number) {
@@ -90,7 +92,12 @@ export class CharactersDisplayComponent implements OnInit {
 
       userLoaded = true;
     });
+
+
+
     await this.AdjustVotes();
+
+
   }
 
   async AdjustVotes() {
