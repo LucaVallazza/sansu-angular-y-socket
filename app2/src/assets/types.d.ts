@@ -5,7 +5,7 @@ export interface UserType{
   hasShown: boolean,
 }
 
-export interface CharacterType{
+export interface OptionType{
   id: number,
   description: string
 }

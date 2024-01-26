@@ -1,29 +1,25 @@
 <div class=" navbar sticky-top p-3 m-0 w-100 d-flex justify-content-around">
   <div>
   </div>
-  @if (user !== undefined && user.votes.length < 6 ) { <button class="disabled m-auto btn btn-primary ">
-    <p class="m-auto">{{user.votes.length}} de 6</p>
-    </button>
 
-    }@else{
-    <button [disabled]="user.hasShown" (click)="sendVotes()" class="m-auto btn btn-primary ">
-    {{user.hasShown? '6 de 6'  : 'Mostrar votos' }}
-    </button>
-    }
+  <button (click)="toggleVotes()" class="m-auto btn btn-primary" [ngClass]="user.votes.length >= 1 ? '' : 'disabled' ">
+    {{user.hasShown? 'Ocultar votos' : 'Mostrar votos' }}
+  </button>
+
 </div>
 
 
 <div class="">
 
-<app-users-status [users]="users"></app-users-status>
+  <app-users-status [users]="users"></app-users-status>
 
 
 
   <div class="characterContainer">
-    @if(characters.length > 0){
-    @for (character of characters; track $index) {
+    @if(options.length > 0){
+    @for (character of options; track $index) {
     <div class="card characterCard">
-      <button class="btn btn-danger deleteButton" (click)="deleteCharacter(character.description)">X</button>
+      <button class="btn btn-danger deleteButton" (click)="deleteOption(character.description)">X</button>
       <p>ID: {{character.id}}</p>
       <p class="fw-bold">Descripcion</p>
       <p class="">{{character.description}}</p>
@@ -34,7 +30,8 @@
           <div class="d-flex justify-content-around flex-row container-fluid ">
             @for(user of users ; track $index){
             @if(user.hasShown){
-            <p class="userIcon" [ngClass]="user.votes.includes(character.id) ? 'iconVoted' : 'iconNotVoted' ">{{user.name[0].toUpperCase() + user.name[1]}}</p>
+            <p class="userIcon" [ngClass]="user.votes.includes(character.id) ? 'iconVoted' : 'iconNotVoted' ">
+              {{user.name[0].toUpperCase() + user.name[1]}}</p>
             }
             }
           </div>
@@ -58,8 +55,6 @@
       </div>
     </div>
     }
-    <app-add-character [apihandler]="apiHandlerReference"></app-add-character>
+    <app-add-Option [apihandler]="apiHandlerReference"></app-add-Option>
   </div>
-
-
 </div>

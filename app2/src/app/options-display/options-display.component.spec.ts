@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddCharacterComponent } from './add-character.component';
+import { OptionsDisplayComponent } from './options-display.component';
 
-describe('AddCharacterComponent', () => {
-  let component: AddCharacterComponent;
-  let fixture: ComponentFixture<AddCharacterComponent>;
+describe('OptionsDisplayComponent', () => {
+  let component: OptionsDisplayComponent;
+  let fixture: ComponentFixture<OptionsDisplayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddCharacterComponent]
+      imports: [OptionsDisplayComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(AddCharacterComponent);
+
+    fixture = TestBed.createComponent(OptionsDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

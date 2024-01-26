@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiHandlerService } from '../services/api-handler.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CharacterType, UserType } from '../../assets/types';
-import { AddCharacterComponent } from '../add-character/add-character.component';
+import { OptionType, UserType } from '../../assets/types';
+import { AddOptionComponent } from '../add-option/add-option.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { io } from 'socket.io-client';
@@ -16,7 +16,7 @@ import { UsersStatusComponent } from '../users-status/users-status.component';
   imports: [
     CommonModule,
     HttpClientModule,
-    AddCharacterComponent,
+    AddOptionComponent,
     RouterModule,
     UsersStatusComponent
   ],
@@ -25,26 +25,28 @@ import { UsersStatusComponent } from '../users-status/users-status.component';
   styleUrl: './vote-component.component.scss',
 })
 export class VoteComponentComponent implements OnInit {
+
   private apihandler = inject(ApiHandlerService);
   private router = inject(Router);
 
-  // Create a reference to the apiHandler to send to the add-character component to avoid connecting twice to the socket and avoid passing two times the same data to the same client
+  // Create a reference to the apiHandler to send to the add-Option component to avoid connecting twice to the socket and avoid passing two times the same data to the same client
   apiHandlerReference : ApiHandlerService = this.apihandler
 
   user: UserType;
 
-  characters: CharacterType[] = [];
+  options: OptionType[] = [];
   users: UserType[] = [];
 
 
-  sendVotes() {
+  toggleVotes() {
     // Manda los votos de user.votes al server y anda a /game
-    this.apihandler.showVotes(this.user)
+    this.apihandler.toggleVotes(this.user)
+    console.log('toggled votes!')
 
   }
 
-  deleteCharacter(description: string) {
-    this.apihandler.removeCharacter(description);
+  deleteOption(description: string) {
+    this.apihandler.removeOption(description);
 
     this.ngOnInit();
   }
@@ -86,11 +88,18 @@ export class VoteComponentComponent implements OnInit {
 
 
   ngOnInit() {
-    // Obtain and set the characters from server
-    this.apihandler.getCharacters().subscribe({
+
+
+    window.addEventListener("beforeunload", e => {
+      this.apihandler.userDisconnect(this.user)
+    });
+
+
+    // Obtain and set the Options from server
+    this.apihandler.getOptions().subscribe({
       next: (res) => {
-        console.log('getCharacters():', res);
-        this.characters = res as CharacterType[];
+        console.log('getOptions():', res);
+        this.options = res as OptionType[];
         const userName = localStorage.getItem('name');
       },
       error: (e) => {
@@ -113,10 +122,10 @@ export class VoteComponentComponent implements OnInit {
     }
     );
 
-    // Suscribe to the event to change characters
-    this.apihandler.charactersEmitter.subscribe((characters)=>{
-      this.characters = characters
-      console.log('characters updated!')
+    // Suscribe to the event to change Options
+    this.apihandler.OptionsEmitter.subscribe((Options)=>{
+      this.options = Options
+      console.log('Options updated!')
     })
 
     this.apihandler.usersEmitter.subscribe((users)=>{
@@ -125,11 +134,13 @@ export class VoteComponentComponent implements OnInit {
       const userName = localStorage.getItem('name');
       this.user = this.users.find(user => (user.name === userName))
 
-      console.log('characters updated!')
+      console.log('Users updated!')
+      console.log(users)
     })
     // await this.adjustVotes();
 
   }
+
 
 
   // async adjustVotes() {
@@ -137,7 +148,7 @@ export class VoteComponentComponent implements OnInit {
   //     let badVotes = [];
   //     this.user.votes.map((vote) => {
   //       let checked = false;
-  //       this.characters.map((char) => {
+  //       this.Options.map((char) => {
   //         if (char.id === vote) {
   //           checked = true;
   //         }

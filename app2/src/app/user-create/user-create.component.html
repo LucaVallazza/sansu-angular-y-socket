@@ -1,3 +1,6 @@
+
+user-create
+
 <div class="container-fluid flex-row justify-content-center  align-items-center vh-100">
   <div class="card m-auto mt-4" style="width:18rem;">
     <div class="card-body">
@@ -7,6 +10,9 @@
         <div>
           <input type="text" formControlName="name" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
         </div>
+        @if (requestError) {
+          <p class="error">{{errorDisplayMessage}}</p>
+        }
         <button type="submit" class="btn btn-primary mt-3 w-100">Confirmar</button>
       </form>
 

@@ -24,12 +24,22 @@ export class UserCreateComponent implements OnInit {
 
   form: FormGroup;
 
+  requestError: boolean = false;
+
+  errorDisplayMessage : string = ""
+
   sendInfo() {
     if (!this.form.invalid) {
       console.log(" Enviado?")
       this.http.post(`${this.API_URL}/users`, {user: this.form.get('name').value}).subscribe(response => {
         this.router.navigate(['/play'])
         console.log('Respuesta del servidor:', response);
+        this.requestError = false
+      }, error => {
+        this.requestError = true
+        if(error.status = 404){
+          this.errorDisplayMessage = 'Failed to connect to server'
+        }
       });
     }
   }

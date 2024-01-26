@@ -2,58 +2,35 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiHandlerService } from '../services/api-handler.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CharacterType, UserType } from '../../assets/types';
+import { OptionType, UserType } from '../../assets/types';
 
 @Component({
-  selector: 'app-characters-display',
+  selector: 'app-Options-display',
   standalone: true,
   imports: [CommonModule, HttpClientModule],
   providers: [ApiHandlerService],
-  templateUrl: './characters-display.component.html',
-  styleUrls: ['./characters-display.component.scss', '../vote-component/vote-component.component.scss'],
+  templateUrl: './Options-display.component.html',
+  styleUrls: ['./Options-display.component.scss', '../vote-component/vote-component.component.scss'],
 })
-export class CharactersDisplayComponent implements OnInit {
+export class OptionsDisplayComponent implements OnInit {
   private apihandler = inject(ApiHandlerService);
 
   apiHandlerReference = this.apihandler
 
   user: UserType;
 
-  characters: CharacterType[] = [];
+  options: OptionType[] = [];
   users: UserType[] = [];
 
-  removeCharacter(description: string) {}
+  removeOption(description: string) {}
 
-  async refresh() {
-    let badVotes = [];
-    this.user.votes.map((vote) => {
-      let checked = false;
-      const findVote = this.characters.map((char) => {
-        if (char.id === vote) {
-          checked = true;
-        }
-      });
-      if (checked) {
-        console.log('voto verificado');
-      } else {
-        console.log('voto no verificado');
-        badVotes.push(vote);
-      }
-    });
-
-    badVotes.map((bv) => {
-      this.user.votes.splice(this.user.votes.indexOf(bv), 1);
-    });
-    await this.serverUpdateVotes();
-
-    this.ngOnInit();
-  }
 
   serverUpdateVotes() {
     console.log('Update Votes');
     this.apihandler.updateUser(this.user)
   }
 
+  // Handle the vote change
   changeVote(id: number) {
     if (this.user.votes.includes(id)) {
       this.user.votes.splice(this.user.votes.indexOf(id), 1);
@@ -68,7 +45,7 @@ export class CharactersDisplayComponent implements OnInit {
   }
 
   end() {
-    const respuesta = window.confirm('Seguro que queres arrancar de 0?');
+    const respuesta = window.confirm('Are you sure that you want to delete ALL the data?');
     if (respuesta) {
       this.apihandler.restart();
     }
@@ -78,11 +55,11 @@ export class CharactersDisplayComponent implements OnInit {
     let charLoaded: boolean = false;
     let userLoaded: boolean = false;
 
-    this.apihandler.getCharacters().subscribe((res) => {
+    this.apihandler.getOptions().subscribe((res) => {
       console.log('Resolution');
       console.log(res);
-      this.characters = res['characters'];
-      console.log(this.characters);
+      this.options = res['options'];
+      console.log(this.options);
       charLoaded = true;
     });
     this.apihandler.getReadyUsers().subscribe((res) => {
@@ -105,7 +82,7 @@ export class CharactersDisplayComponent implements OnInit {
       let badVotes = [];
       this.user.votes.map((vote) => {
         let checked = false;
-        const findVote = this.characters.map((char) => {
+        const findVote = this.options.map((char) => {
           if (char.id === vote) {
             checked = true;
           }

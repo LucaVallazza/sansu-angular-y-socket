@@ -6,7 +6,7 @@ const USERS_PATH = "/users";
 
 export default function () {
   app.get(`${USERS_PATH}`, async (req, res) => {
-    const users = await prisma.users.findMany({orderBy: {name: 'asc'}});
+    const users = await prisma.user.findMany({orderBy: {name: 'asc'}});
     console.log("GET A /USERS")
     console.log("    devolvemos" , users)
     res.status(200).send(users);
@@ -19,16 +19,16 @@ export default function () {
       res.status(300).send("La informacion se mando en un formato incorrecto");
     }
 
-    const user = await prisma.users.findMany({where: {id: body.id}});
+    const user = await prisma.user.findMany({where: {id: body.id}});
 
     if(!user){
         res.status(200).send('No se encontro ningun usuario')
     }
     else if(user.length > 1 ){
-        await prisma.users.deleteMany({where: {id: body.id}})
+        await prisma.user.deleteMany({where: {id: body.id}})
         res.status(409).send('Hay 2 usuarios con ese ID. Ambos fueron eliminados')
     }else{
-        await prisma.users.update({where: {id: body.id},data : {votes: body.votes, hasShown: true}})
+        await prisma.user.update({where: {id: body.id},data : {votes: body.votes, hasShown: true}})
         .catch((e)=>{
             res.status(500).send('Hubo un error al actualizar los usuarios').json({error: e})
         })
@@ -45,7 +45,7 @@ export default function () {
       res.status(300).send("La informacion se mando en un formato incorrecto");
     }
 
-    const user = await prisma.users.findMany({where: {name: body.name}});
+    const user = await prisma.user.findMany({where: {name: body.name}});
 
     if(user.length === 0){
         const newUser = {
@@ -53,11 +53,11 @@ export default function () {
             hasShown: false,
             votes : []
         }
-        const user = await prisma.users.create({data:newUser})    
+        const user = await prisma.user.create({data:newUser})    
         res.status(201).json({user:user, message: "Usuario creado!"})
     }
     else if(user.length > 1 ){
-        await prisma.users.deleteMany({where: {id: body.id}})
+        await prisma.user.deleteMany({where: {id: body.id}})
         res.status(409).send('Hay 2 usuarios con ese ID. Ambos fueron eliminados')
     }else{
         res.status(200).json({user:user[0] , message: "Ya hay un usuario con ese nombre!"})

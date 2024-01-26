@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import userRoutes from "./routes/users";
-import characterRoutes from "./routes/characters";
+import optionRoutes from "./routes/options";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
@@ -33,12 +33,12 @@ const port = 3000;
 const ws_port = 3001;
 
 app.delete('/restart', async ()=>{
-  await prisma.character.deleteMany()
-  await prisma.users.deleteMany()
+  await prisma.option.deleteMany()
+  await prisma.user.deleteMany()
 })
 
 userRoutes();
-characterRoutes();
+optionRoutes();
 socket()
 
 

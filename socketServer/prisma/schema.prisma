@@ -10,14 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   id       Int     @id @default(autoincrement())
   name     String  @unique
   votes    Int[]   @default([])
   hasShown Boolean @default(false)
 }
 
-model Character {
+model Option {
   id          Int    @id @default(autoincrement())
   description String @unique
 }
